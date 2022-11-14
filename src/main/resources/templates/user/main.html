@@ -14,7 +14,7 @@
         <a class="navbar-brand fs-3 fw-bold text-primary" th:href="@{/}">TechStore</a>
 
         <div class="d-flex justify-content-end">
-            <a class="btn btn-light fw-semibold me-3" href="cart.html" role="button">Cart</a>
+            <a class="btn btn-light fw-semibold me-3" th:href="@{/cart}" role="button">Cart</a>
             <a class="btn btn-outline-success me-3" th:href="@{/auth/login}" role="button" sec:authorize="isAnonymous()">Login</a>
             <a class="btn btn-outline-secondary" th:href="@{/auth/registration}" role="button" sec:authorize="isAnonymous()">Registration</a>
             <div class="dropdown-center ms-3" sec:authorize="isAuthenticated()">

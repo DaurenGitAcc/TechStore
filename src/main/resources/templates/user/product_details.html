@@ -14,7 +14,7 @@
     <a class="navbar-brand fs-3 fw-bold text-primary" href="main.html">TechStore</a>
 
     <div class="d-flex justify-content-end">
-      <a class="btn btn-light fw-semibold me-3" href="cart.html" role="button">Cart</a>
+      <a class="btn btn-light fw-semibold me-3" th:href="@{/cart}" role="button">Cart</a>
       <a class="btn btn-outline-success me-3" href="login.html" role="button" sec:authorize="isAnonymous()">Login</a>
       <a class="btn btn-outline-secondary" href="registration.html" role="button" sec:authorize="isAnonymous()">Registration</a>
       <div class="dropdown-center ms-3" sec:authorize="isAuthenticated()">
@@ -50,12 +50,14 @@
       <div class="row justify-content-start">
         <div class="col-6 text-start">
           <img src="https://placehold.jp/200x200.png" alt="...">
-          <button type="button" class="btn btn-success my-3 d-block">Add to Cart</button>
-
+          <button type="submit" form="cartForm" class="btn btn-success my-3 d-block">Add to Cart</button>
+          <form th:method="POST" th:action="@{/cart}" id="cartForm">
+            <input type="hidden" id="product_id" name="product_id" th:value="${product.getId()}">
+          </form>
         </div>
         <div class="col-6">
-          <p class="fs-5" th:text="${product.getDescription()}">Description: Lorfrfomrgmeimoekrmbomdofkmvodf</p>
-          <p class="fs-5" th:text="${product.getPrice()}">Price: 100$</p>
+          <p class="fs-5" th:text="${'Description: '+product.getDescription()}"></p>
+          <p class="fs-5" th:text="${'Price: '+product.getPrice()+'$'}"></p>
         </div>
       </div>
 

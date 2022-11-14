@@ -1,88 +1,142 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login page</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login page</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+            crossorigin="anonymous"></script>
 </head>
 <body style="background-color: #F0F1F2;">
 
-<nav class="navbar"  style="background-color: #FFFFFF;">
-  <div class="container-fluid my-2 mx-3">
-    <a class="navbar-brand fs-3 fw-bold text-primary" href="main.html">TechStore</a>
+<nav class="navbar" style="background-color: #FFFFFF;">
+    <div class="container-fluid my-2 mx-3">
+        <a class="navbar-brand fs-3 fw-bold text-primary" th:href="@{/}">TechStore</a>
 
-    <div class="d-flex justify-content-end">
-      <a class="btn btn-light fw-semibold me-3" href="cart.html" role="button">Cart</a>
-      <a class="btn btn-outline-success me-3" href="login.html" role="button">Login</a>
-      <a class="btn btn-outline-secondary" href="registration.html" role="button">Registration</a>
-      <div class="dropdown-center ms-3">
-        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-          Username
-        </button>
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#">Profile</a></li>
-          <li><a class="dropdown-item" href="#">Settings</a></li>
-          <li><a class="dropdown-item" href="adminPage.html">ADMIN</a></li>
-          <li><a class="dropdown-item" href="#">Logout</a></li>
-        </ul>
-      </div>
+        <div class="d-flex justify-content-end">
+            <a class="btn btn-light fw-semibold me-3" th:href="@{/cart}" role="button">Cart</a>
+            <a class="btn btn-outline-success me-3" th:href="@{/auth/login}" role="button">Login</a>
+            <a class="btn btn-outline-secondary" th:href="@{/auth/registration}" role="button">Registration</a>
+            <div class="dropdown-center ms-3" sec:authorize="isAuthenticated()">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        th:text="${currentUser.name+' '+currentUser.getSurname()}">
+                    Username
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" th:href="@{/}">Profile</a></li>
+                    <li><a class="dropdown-item" th:href="@{/}">Settings</a></li>
+                    <li th:if="${isPrivilege}"><a class="dropdown-item" th:href="@{/admin/purchases}">ADMIN</a></li>
+                    <li><a class="dropdown-item" href="/logout">Logout</a></li>
+                </ul>
+            </div>
+        </div>
     </div>
-  </div>
 </nav>
 
-<div class="container my-5" >
-  <p class="fs-2 fw-semibold ms-3">Cart</p>
-  <div class="row justify-content-around">
-    <div class="col-8 rounded p-0" style="background-color: #FFFFFF;">
-      <ul class="list-group">
-        <li class="list-group-item d-flex justify-content-between align-items-center fs-5 fw-semibold">
-          Samsung
-          <div class="d-inline">
-            <button type="button" class="btn btn-light fw-bold rounded-5">‒</button>
-            <span class="badge bg-primary rounded-pill">14</span>
-            <button type="button" class="btn btn-light fw-bold rounded-5">+</button>
-          </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center fs-5 fw-semibold">
-          Samsung
-          <div class="d-inline">
-            <button type="button" class="btn btn-light fw-bold rounded-5">‒</button>
-            <span class="badge bg-primary rounded-pill">14</span>
-            <button type="button" class="btn btn-light fw-bold rounded-5">+</button>
-          </div>
-        </li>
-        <li class="list-group-item d-flex justify-content-between align-items-center fs-5 fw-semibold">
-          Samsung
-          <div class="d-inline">
-            <button type="button" class="btn btn-light fw-bold rounded-5">‒</button>
-            <span class="badge bg-primary rounded-pill">14</span>
-            <button type="button" class="btn btn-light fw-bold rounded-5">+</button>
-          </div>
-        </li>
+<div class="container my-5">
+    <p class="fs-2 fw-semibold ms-3">Cart</p>
+    <div class="row justify-content-around">
+        <div class="col-8 rounded p-0" style="background-color: #FFFFFF;">
+            <ul class="list-group">
+                <th:block th:each="product,iStat:${products}">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span th:text="${product.getName()}" class="fs-5 fw-semibold">Hello World</span>
+                        <div class="d-inline">
+                            <button type="submit" class="btn btn-light fw-bold rounded-5"
+                                    th:form="'minusForm'+${product.getId()}">‒
+                            </button>
+                            <span th:text="${counts.get(iStat.index)}" class="badge bg-primary rounded-pill">14</span>
+                            <button type="submit" class="btn btn-light fw-bold rounded-5"
+                                    th:form="'plusForm'+${product.getId()}">+
+                            </button>
+                            <form th:method="POST" th:action="@{/cart/minus}" th:id="'minusForm'+${product.getId()}">
+                                <input type="hidden" id="product_id" name="product_id" th:value="${product.getId()}">
+                            </form>
+                            <form th:method="POST" th:action="@{/cart/plus}" th:id="'plusForm'+${product.getId()}">
+                                <input type="hidden" id="product_id" name="product_id" th:value="${product.getId()}">
+                            </form>
+                        </div>
+                    </li>
+                </th:block>
 
-      </ul>
-      <div class="text-center mb-2 mt-3">
-        <button type="button" class="btn btn-link text-decoration-none fs-5">Clear cart</button>
-      </div>
+
+            </ul>
+            <div class="text-center mb-2 mt-3">
+                <form th:method="POST" th:action="@{/cart/clear}" id="clearForm"></form>
+                <button type="submit" class="btn btn-link text-decoration-none fs-5" form="clearForm">Clear cart
+                </button>
+            </div>
+        </div>
+        <div class="col-3 ms-5 rounded p-3" style="background-color: #FFFFFF;">
+            <p class="fs-5 fw-semibold">Amount:</p>
+            <th:block th:each="product,iStat:${products}">
+                <div class="d-flex justify-content-between">
+                    <p class="fs-5" th:text="${product.getName()+' - '+counts.get(iStat.index)}"></p>
+                    <p class="fs-5" th:text="${product.getPrice()*counts.get(iStat.index)+'$'}"></p>
+                </div>
+            </th:block>
+            <hr/>
+
+            <p class="fs-5" th:text="${'Total amount: '+totalPrice+'$'}">Total amount: 400$</p>
+            <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#exampleModal"
+                    sec:authorize="isAuthenticated()">Make a purchase
+            </button>
+            <a class="btn btn-primary" role="button" href="/auth/login" sec:authorize="isAnonymous()">Make a
+                purchase</a>
+            <p sec:authorize="isAnonymous()">Please authorize to purchase</p>
+        </div>
     </div>
-    <div class="col-3 ms-5 rounded p-3" style="background-color: #FFFFFF;">
-      <p class="fs-5 fw-semibold">Amount:</p>
-
-      <div class="d-flex justify-content-between">
-        <p class="fs-5">1 product amount</p>
-        <p class="fs-5">400$</p>
-      </div>
-      <hr/>
-
-      <p class="fs-5">Total amount: 400$</p>
-      <button type="button" class="btn btn-success">Make a purchase</button>
-    </div>
-  </div>
 </div>
 
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Payment</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
 
+                <form th:method="POST" th:action="@{/cart/purchase}">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between">
+                            <label for="card_number" class="col-form-label">Card number</label>
+                            <div class="d-inline align-end">
+                                <img src="../../images/icons8-visa-48.png" style="width: 35px;">
+                                <img src="../../images/icons8-mastercard-48.png" style="width: 35px;">
+                                <img src="../../images/icons8-paypal-48.png" style="width: 35px;">
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" id="card_number" maxlength="19" pattern="/^4[0-9]\d+$/"
+                               placeholder="1234 5678 9012 3456">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="card_name" class="col-form-label">Name on card</label>
+                        <input type="text" class="form-control" id="card_name" placeholder="Name Surname">
+                    </div>
+                    <div class="mb-3 ">
+                        <div class="d-flex justify-content-between">
+                            <label for="expiry_date" class="col-form-label">Expiry date</label>
+                            <label for="code" class="col-form-label" style="margin-right: 232px;">Security code</label>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <input type="text" class="form-control d-flex" style="width: 80px;" id="expiry_date"
+                                   placeholder="MM/yy">
+                            <input type="password" class="form-control d-flex" style="width: 45px; margin-right: 100px;"
+                                   id="code" placeholder="•••">
+                            <button type="submit" class="btn btn-primary" sec:authorize="isAuthenticated()">Buy</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 </body>

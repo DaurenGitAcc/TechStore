@@ -26,20 +26,22 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception{
+    protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/admin/**")
-                .hasAnyRole("MODER","ADMIN")
+                .hasAnyRole("MODER", "ADMIN")
                 .and()
                 .authorizeRequests()
-                .antMatchers("/auth/login","/auth/registration",
-                        "/","/category/**","/products/**","/error").permitAll()
-                .anyRequest().hasAnyRole("USER","MODER","ADMIN")
+                .antMatchers("/auth/login", "/auth/registration",
+                        "/", "/category/**", "/cart", "/cart/minus", "/cart/plus",
+                        "/cart/clear",
+                        "/products/**", "/error").permitAll()
+                .anyRequest().hasAnyRole("USER", "MODER", "ADMIN")
                 .and()
                 .formLogin().loginPage("/auth/login")
                 .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/",true)
+                .defaultSuccessUrl("/", true)
                 .failureUrl("/auth/login?error").and()
                 .logout().logoutUrl("/logout").logoutSuccessUrl("/auth/login");
     }
@@ -48,12 +50,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(getPasswordEncoder());
     }
+
     @Bean
-    public PasswordEncoder getPasswordEncoder(){
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
     @Bean
-    public ModelMapper modelMapper(){
+    public ModelMapper modelMapper() {
         return new ModelMapper();
     }
 }
