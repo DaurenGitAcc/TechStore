@@ -18,8 +18,10 @@
 
         <div class="d-flex justify-content-end">
             <a class="btn btn-light fw-semibold me-3" th:href="@{/cart}" role="button">Cart</a>
-            <a class="btn btn-outline-success me-3" th:href="@{/auth/login}" role="button">Login</a>
-            <a class="btn btn-outline-secondary" th:href="@{/auth/registration}" role="button">Registration</a>
+            <a class="btn btn-outline-success me-3" th:href="@{/auth/login}" role="button"
+               sec:authorize="isAnonymous()">Login</a>
+            <a class="btn btn-outline-secondary" th:href="@{/auth/registration}" role="button"
+               sec:authorize="isAnonymous()">Registration</a>
             <div class="dropdown-center ms-3" sec:authorize="isAuthenticated()">
                 <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
                         aria-expanded="false"
@@ -27,7 +29,7 @@
                     Username
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" th:href="@{/}">Profile</a></li>
+                    <li><a class="dropdown-item" th:href="@{/profile}">Profile</a></li>
                     <li><a class="dropdown-item" th:href="@{/}">Settings</a></li>
                     <li th:if="${isPrivilege}"><a class="dropdown-item" th:href="@{/admin/purchases}">ADMIN</a></li>
                     <li><a class="dropdown-item" href="/logout">Logout</a></li>
@@ -38,6 +40,13 @@
 </nav>
 
 <div class="container my-5">
+
+    <div class="alert alert-warning alert-dismissible fade show my-2 col-8" role="alert"
+         th:if="${isNotEnough}">
+        <strong>We apologize</strong> the product is over.
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
     <p class="fs-2 fw-semibold ms-3">Cart</p>
     <div class="row justify-content-around">
         <div class="col-8 rounded p-0" style="background-color: #FFFFFF;">

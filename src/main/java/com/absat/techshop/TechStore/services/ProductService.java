@@ -23,41 +23,55 @@ public class ProductService {
         this.categoriesRepository = categoriesRepository;
     }
 
-    public List<Product> findAll(){
+    public List<Product> findAll() {
         return productsRepository.findAll();
     }
-    public Optional<Product> findOne(int id){
+
+    public List<Product> findByName(String substring) {
+        return productsRepository.findByNameContaining(substring);
+    }
+
+    public Optional<Product> findOne(int id) {
         return productsRepository.findById(id);
     }
+
     @Transactional
-    public void save(Product product){
-        if(product.getPhoto().isEmpty())
+    public void save(Product product) {
+        if (product.getPhoto().isEmpty())
             product.setPhoto("https://via.placeholder.com/100");
         productsRepository.save(product);
     }
+
     @Transactional
-    public void update(Product product){
-        if(product.getPhoto().isEmpty())
+    public void update(Product product) {
+        if (product.getPhoto().isEmpty())
             product.setPhoto("https://via.placeholder.com/100");
         productsRepository.save(product);
     }
+
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         productsRepository.deleteById(id);
     }
+
     @Transactional
-    public void changeCount(int id,int count){
+    public void changeCount(int id, int count) {
         Optional<Product> productOptional = productsRepository.findById(id);
         Product product = null;
-        if(productOptional.isPresent()){
-            product=productOptional.get();
+        if (productOptional.isPresent()) {
+            product = productOptional.get();
             product.setCount(count);
         }
         productsRepository.save(product);
     }
+
     @Transactional
-    public List<Product> findByCategory(int category_id){
+    public List<Product> findByCategory(int category_id) {
         Optional<Category> category = categoriesRepository.findById(category_id);
         return productsRepository.findByCategoryEquals(category.get());
+    }
+
+    public int getProductCount(int product_id) {
+        return productsRepository.findById(product_id).get().getCount();
     }
 }

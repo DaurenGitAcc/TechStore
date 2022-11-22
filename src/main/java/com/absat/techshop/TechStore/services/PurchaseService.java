@@ -27,6 +27,10 @@ public class PurchaseService {
         return purchasesRepository.findAll();
     }
 
+    public List<Purchase> findByBuyer(User buyer) {
+        return purchasesRepository.findByBuyerEquals(buyer);
+    }
+
     public Optional<Purchase> findOne(int id) {
         return purchasesRepository.findById(id);
     }

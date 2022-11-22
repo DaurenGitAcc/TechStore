@@ -1,6 +1,8 @@
 package com.absat.techshop.TechStore.models;
 
 
+import org.hibernate.validator.constraints.UniqueElements;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
@@ -20,6 +22,7 @@ public class User {
     @NotEmpty(message = "Surname field should not be empty")
     private String surname;
     @Email
+    // @UniqueElements // maybe I'll change it sometime
     @Column(name = "email")
     @NotEmpty(message = "Email field should not be empty")
     private String email;
@@ -27,7 +30,7 @@ public class User {
     @NotEmpty(message = "Password field should not be empty")
     private String password;
     @Column(name = "tel_number")
-   // @NotEmpty(message = "Tel. number field should not be empty")
+    // @NotEmpty(message = "Tel. number field should not be empty")
     private String telNumber;
     @Column(name = "avatar")
     private String avatar;

@@ -15,31 +15,36 @@ import java.util.Optional;
 public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final UsersRepository usersRepository;
+
     @Autowired
     public UserService(PasswordEncoder passwordEncoder, UsersRepository usersRepository) {
         this.passwordEncoder = passwordEncoder;
         this.usersRepository = usersRepository;
     }
 
-    public List<User> findAll(){
+    public List<User> findAll() {
         return usersRepository.findAll();
     }
-    public Optional<User> findOne(int id){
+
+    public Optional<User> findOne(int id) {
         return usersRepository.findById(id);
     }
+
     @Transactional
-    public void save(User user){
+    public void save(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setAvatar("https://via.placeholder.com/200");
         usersRepository.save(user);
     }
 
     @Transactional
-    public void update(User user){
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+    public void update(User user) {
+//        user.setPassword(passwordEncoder.encode(user.getPassword()));
         usersRepository.save(user);
     }
+
     @Transactional
-    public void delete(int id){
+    public void delete(int id) {
         usersRepository.deleteById(id);
     }
 
