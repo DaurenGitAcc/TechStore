@@ -58,7 +58,7 @@
             <p class="fs-2 fw-semibold text-start" th:text="${product.getName()}">Samsung Galaxy A50</p>
             <div class="row justify-content-start">
                 <div class="col-6 text-start">
-                    <img src="https://placehold.jp/200x200.png" alt="...">
+                    <img th:src="@{${product.photo}}" alt="...">
                     <button type="submit" form="cartForm" class="btn btn-success my-3 d-block"
                             th:if="${product.getCount()>=1}">Add to Cart
                     </button>
@@ -70,8 +70,8 @@
                     </form>
                 </div>
                 <div class="col-6">
-                    <p class="fs-5" th:text="${'Description: '+product.getDescription()}"></p>
-                    <p class="fs-5" th:text="${'Price: '+product.getPrice()+'$'}"></p>
+                    <p class="fs-5 text-start" style="white-space: pre;" th:text="${'Description: '+product.getDescription()}"></p>
+                    <p class="fs-5 text-start" th:text="${'Price: '+product.getPrice()+'$'}"></p>
                 </div>
             </div>
 
@@ -95,7 +95,7 @@
             <div class="container my-3" >
                 <div class="row justify-content-start">
                     <div class="col-10">
-                        <p class="fs-5 text-start">1 comments:</p>
+                        <p class="fs-5 text-start" th:text="${comments.size()+' comments'}">1 comments:</p>
 
                         <div class="card mt-3" th:each="comment:${comments}">
                             <div class="card-body">

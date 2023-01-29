@@ -67,7 +67,7 @@
                         <img th:src="${product.getPhoto()}" class="card-img-top" th:alt="${product.getName()}">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${product.getName()}">Card title</h5>
-                            <p class="card-text" th:text="${product.getPrice()}">1000$</p>
+                            <p class="card-text" th:text="${product.getPrice()+'$'}">1000$</p>
 
                         </div>
                         <div class="card-footer">
